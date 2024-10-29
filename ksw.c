@@ -25,6 +25,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <assert.h>
 #if defined __SSE2__
 #include <emmintrin.h>
@@ -415,6 +416,21 @@ typedef struct {
 
 int ksw_extend2(int qlen, const uint8_t *query, int tlen, const uint8_t *target, int m, const int8_t *mat, int o_del, int e_del, int o_ins, int e_ins, int w, int end_bonus, int zdrop, int h0, int *_qle, int *_tle, int *_gtle, int *_gscore, int *_max_off)
 {
+  static FILE* outFile = NULL;
+  if (outFile == NULL){
+    outFile = fopen("out.txt", "a");
+  }
+  fprintf(outFile, "%d\n", h0);
+
+  for (int i = 0; i < tlen; i++){
+    fprintf(outFile, "%d", target[i]);
+  }
+  fprintf(outFile, "\n");
+  for (int i = 0; i < qlen; i++){
+    fprintf(outFile, "%d", query[i]);
+  }
+  fprintf(outFile, "\n");
+
 	eh_t *eh; // score array
 	int8_t *qp; // query profile
 	int i, j, k, oe_del = o_del + e_del, oe_ins = o_ins + e_ins, beg, end, max, max_i, max_j, max_ins, max_del, max_ie, gscore, max_off;
